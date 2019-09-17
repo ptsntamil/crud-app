@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<title>CRUD App</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+		<script src="https://unpkg.com/vue"></script>
+		<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+	</head>
+	<body>
+		<div id="app" class="container">
+			<header>
+				<nav class="navbar navbar-dark bg-dark">
+					<a class="navbar-brand" href="#">CRUD app</a>
+				</nav>
+			</header>
+			<crud-form :currentuser="currentUser" @addorupdateuser="addorUpdateUser"></crud-form>
+			<crud-table @update:currentuser="currentUser = $event" :users="users" :gridobj="gridObj"></crud-table>
+			<!-- <router-view></router-view> -->
+		</div>
+	</body>
+	<script src="index.js"></script>
+</html>
