@@ -16,17 +16,12 @@
   export default {
     name: 'App',
 	  computed: {
-		  authenticated: function() {
+		  authenticated() {
 			  return this.$store.getters.isAuthenticated;
 		  }
 	  },
-	  watch: {
-		  showLogout: function(value) {
-			  console.log('showLogout', value);
-		  }
-	  },
 	  methods: {
-		  logout: function() {
+		  logout() {
 			  localStorage.setItem('loggedUser', "");
 			  this.$store.dispatch('authenticate', false);
 			  this.$router.push({path: '/'})

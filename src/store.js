@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {getUsers, getUserById } from './services';
 
 Vue.use(Vuex)
 
@@ -12,15 +13,15 @@ export default new Vuex.Store({
       key:"email",
       header: "Email"
     },{
-      key:"username",
-      header: "Username"
+      key:"first_name",
+      header: "First Name"
     }],
     users:[{
       id:1,
       username:"ptsntamil",
       email:"ptsntamil@gmail.com",
       password: "tamiltamil"
-    },{
+    }/*,{
       id:2,
       username:"two",
       email:"two@gmail.com",
@@ -60,13 +61,31 @@ export default new Vuex.Store({
       username:"nine",
       email:"nine@gmail.com",
       password: "nine"
-    }],
+    }*/],
     authenticated: false,
-    nxtUserId:10
+    nxtUserId:10,
+    gridData: {},
+    currentUser: {
+      id:"",
+      email: "",
+      first_name: "",
+      last_name:""
+    }
+  },
+  mutations: {
+    setUsers(state, data) {
+      state.gridData = data;
+    },
+    setCurrentUser(state, data) {
+      state.currentUser = data;
+    }
   },
   getters: {
     getUserById: (state) => (id) => {
-      return state.users.find(user => user.id === id);
+      return state.users.slice(id,1);
+    },
+    getCurrentUser(state) {
+      return state.currentUser;
     },
     getUserByUsername: state => username => {
       return state.users.find(user => user.username === username);
@@ -74,11 +93,14 @@ export default new Vuex.Store({
     isAuthenticated: state => {
       return state.authenticated;
     },
-    totalUsers: (state) => {
-      return state.users.length;
-    },
     getUsersForGrid: state => param => {
       return state.users.slice(param.from, param.to);
+    },
+    getGridData(state) {
+      return state.gridData;
+    },
+    getUsers(state) {
+      return state.users;
     }
   },
   actions: {
@@ -102,6 +124,14 @@ export default new Vuex.Store({
     },
     authenticate({state}, isAuthenticated) {
       state.authenticated = isAuthenticated;
+    },
+    async getAsyncUsers(context, param) {
+      const result = await getUsers(param.page);
+      context.commit('setUsers', result.data);
+    },
+    async getUserById(context, id) {
+      const result = await getUserById(id);
+      context.commit('setCurrentUser', result.data.data)
     }
   }
 })

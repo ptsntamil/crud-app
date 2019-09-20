@@ -10,9 +10,9 @@
 						<span class="text-danger">{{error.email}}</span>
 					</div>
 					<div class="form-group">
-						<label>Username</label>
-						<input type="text" v-model="currentUser.username" class="form-control" placeholder="Username" :class="{'border-danger':error.username}" required/>
-						<span class="text-danger">{{error.username}}</span>
+						<label>First Name</label>
+						<input type="text" v-model="currentUser.first_name" class="form-control" placeholder="First Name" :class="{'border-danger':error.first_name}" required/>
+						<span class="text-danger">{{error.first_name}}</span>
 					</div>
 					<button type="submit" class="btn btn-primary">{{currentUser.id ? 'Update' : 'Submit' }}</button>
 					<router-link class="btn btn-light" to="/users">Cancel</router-link>
@@ -29,12 +29,12 @@
 		data: function() {
 			return {
 				currentUser: {
-					username:"",
+					first_name:"",
 					email:"",
 					password: ""
 				},
 				error: {
-					username:"",
+					first_name:"",
 					email:""
 				},
 				showmodal: false
@@ -42,18 +42,25 @@
 		},
 		components: {
 			ChangePassword
-		},
-		created: function() {
+    },
+    created() {
+      this.$store.subscribe((mutation, state) => {
+        if (mutation.type === 'setCurrentUser') {
+          this.currentUser = state.currentUser;
+        }
+      });
+    },
+		mounted() {
 			if(this.$route.params.id) {
-				this.currentUser = this.$store.getters.getUserById(+this.$route.params.id);
+        this.$store.dispatch('getUserById', +this.$route.params.id);
 			}
-		},
+    },
 		methods: {
 			validateForm: function() {
-				if(!this.currentUser.username) {
-					this.error.username = "Username is required";
+				if(!this.currentUser.first_name) {
+					this.error.first_name = "First Name is required";
 				} else {
-					this.error.username = "";
+					this.error.first_name = "";
 				}
 				if(!this.currentUser.email) {
 				this.error.email = "Email is required";
@@ -62,8 +69,8 @@
 				} else {
 					this.error.email = "";
 				}
-				if(!this.error.username && !this.error.email) {
-          this.currentUser.password = this.currentUser.username;
+				if(!this.error.first_name && !this.error.email) {
+          this.currentUser.password = this.currentUser.first_name;
 					this.addUser();
 					this.$router.push({ path: '/users' });
 				}
@@ -85,8 +92,7 @@
 		},
 		computed: {
 			isFormError: function() {
-				console.log(this.error)
-				if(!this.error.username && !this.error.email) {
+				if(!this.error.first_name && !this.error.email) {
 					return true;
 				}
 				return false;
