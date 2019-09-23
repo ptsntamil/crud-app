@@ -49,6 +49,7 @@ let router = new Router({
       }
     },{
       path: '*',
+      name:"NotFound",
       component: Error
     }
   ]
