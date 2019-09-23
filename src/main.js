@@ -12,7 +12,8 @@ import ChangePassword from './components/ChangePassword.vue';
 //import 
 //import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import 'animate.css';
+ 
 Vue.config.productionTip = false
 
 new Vue({
