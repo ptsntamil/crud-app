@@ -4,7 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="favicon.ico">
+    <link rel="manifest" href="/manifest.json"/>
+    <link rel="icon" href="favicon.ico"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="apple-mobile-web-app-title" content="CRUD"/>
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png"/>
+    <meta name="description" content="A sample CRUD App using Vue.js"/>
+    <meta name="theme-color" content="#2F3BA2"/>
     <title>crud-app</title>
   </head>
   <body>
@@ -14,4 +21,14 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((reg) => {
+            console.log('Service worker registered.', reg);
+          });
+      });
+    }
+  </script>
 </html>
