@@ -26,13 +26,6 @@ new Vue({
     Login,
     Modal,
     ChangePassword
-	},
-	methods: {
-		logout: function() {
-			localStorage.setItem('loggedUser', "");
-			this.$store.dispatch('authenticate', false);
-			router.push({path: '/'})
-		}
-	},
+  },
   render: h => h(App)
 }).$mount('#app')

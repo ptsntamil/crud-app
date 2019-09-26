@@ -23,7 +23,8 @@
 </template>
 
 <script>
-  import ChangePassword from '@/components/ChangePassword.vue';
+	import ChangePassword from '@/components/ChangePassword.vue';
+	import {ACTIONS, constant} from '@/constants';
   export default {
     name:'CrudForm',
 		data: function() {
@@ -35,7 +36,8 @@
 				},
 				error: {
 					first_name:"",
-					email:""
+					email:"",
+					error: ""
 				},
 				showmodal: false
 			}
@@ -47,14 +49,22 @@
       this.$store.subscribe((mutation, state) => {
         if (mutation.type === 'setCurrentUser') {
           this.currentUser = state.currentUser;
-        }
+        } else if(mutation.type === constant.FORM_ERROR) {
+					this.error.error = state.formError;
+					if(state.formError === 'success') {
+						this.moveToUsers();
+					}
+				}
       });
     },
 		mounted() {
 			if(this.$route.params.id) {
         this.$store.dispatch('getUserById', +this.$route.params.id);
 			}
-    },
+		},
+		destroyed() {
+
+		},
 		methods: {
 			validateForm: function() {
 				if(!this.currentUser.first_name) {
@@ -70,10 +80,11 @@
 					this.error.email = "";
 				}
 				if(!this.error.first_name && !this.error.email) {
-          this.currentUser.password = this.currentUser.first_name;
-					this.addUser();
-					this.$router.push({ path: '/users' });
+					this.$store.dispatch(ACTIONS.CREATE_OR_UPDATE_USER, this.currentUser);
 				}
+			},
+			moveToUsers() {
+				this.$router.push({ path: '/users' });
 			},
 			validateEmail: function(email) {
 				let emailMatch = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -83,11 +94,6 @@
 				this.$store.dispatch('addorUpdateUser', {
 					user:this.currentUser
 				});
-			}
-		},
-		watch: {
-			showmodal: function(value) {
-				console.log(value)
 			}
 		},
 		computed: {

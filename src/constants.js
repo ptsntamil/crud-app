@@ -1,0 +1,9 @@
+export const  constant = {
+  SET_AUTH: "SET_AUTH",
+  SET_LOGIN_ERROR: "SET_LOGIN_ERROR",
+  FORM_ERROR: "FORM_ERROR",
+  SET_LOADING: "SET_LOADING"
+};
+export const ACTIONS = {
+  CREATE_OR_UPDATE_USER: 'CREATE_OR_UPDATE_USER' 
+};
