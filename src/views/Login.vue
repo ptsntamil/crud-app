@@ -4,9 +4,9 @@
       <h2 class="text-info">Login</h2>
       <form v-on:submit.prevent="login" novalidate="true">
         <div class="form-group">
-          <label>Username</label>
-          <input type="email" v-model="user.username" class="form-control" :class="{'border-danger':error.username}" placeholder="Username" required/>
-          <span class="text-danger">{{error.username}}</span>
+          <label>Email</label>
+          <input type="email" v-model="user.email" class="form-control" :class="{'border-danger':error.email}" placeholder="email" required/>
+          <span class="text-danger">{{error.email}}</span>
         </div>
         <div class="form-group">
           <label>Password</label>
@@ -15,54 +15,63 @@
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
         <transition name="fade" enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
-          <div v-if="error.error" class="text-danger">{{error.error}}</div>
+          <div v-if="error.error" class="text-danger mt-2">{{error.error}}</div>
         </transition>
       </form>
     </div>
   </div>
 </template>
 <script>
+  import { constant } from '@/constants';
 	export default {
 		name: 'login',
 		data: function() {
 			return {
 				user: {
-					username: "",
+					email: "",
 					password: ""
 				},
 				error:{ 
-					username: "",
+					email: "",
 					password: "",
 					error: ""
 				}
 			};
     },
+    created() {
+      this.$store.subscribe((mutation, state) => {
+        switch(mutation.type) {
+          case constant.SET_AUTH: 
+            this.moveToUsers();
+            break;
+          case constant.SET_LOGIN_ERROR: 
+            this.error.error = state.loginError;
+            break;
+        }
+      });
+    },
     methods: {
-      login: function() {
+      login() {
         if(this.validateForm()) {
-          let dbUser = this.$store.getters.getUserByUsername(this.user.username);
-          if(dbUser && dbUser.password === this.user.password) {
-            this.$store.dispatch('authenticate', true);
-            localStorage.setItem('loggedUser', this.user.username);
-            this.$router.push('/users');
-            this.error.error = "";
-          } else {
-            this.error.error = "Invalid username or password";
-          }
+          this.$store.dispatch('login', this.user);
         }
       },
-      validateForm: function() {
-        if(!this.user.username) {
-          this.error.username = "Username is Required";
+      moveToUsers() {
+        localStorage.setItem('authToken', this.$store.getters.getAuthToken);
+        this.$router.push('/users');
+      },
+      validateForm() {
+        if(!this.user.email) {
+          this.error.email = "Email is Required";
         } else {
-          this.error.username = "";
+          this.error.email = "";
         }
         if(!this.user.password) {
           this.error.password = "Password is Required";
         } else {
           this.error.password = "";
         }
-        if(this.user.username && this.user.password) {
+        if(this.user.email && this.user.password) {
           return true;
         }
       }

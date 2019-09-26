@@ -6,6 +6,7 @@ import Error from './views/Error.vue';
 import CrudForm from './views/CrudForm.vue';
 import Login from './views/Login.vue';
 import Store from './store';
+import { constant } from './constants';
 
 Vue.use(Router)
 
@@ -49,37 +50,37 @@ let router = new Router({
       }
     },{
       path: '*',
+      name:"NotFound",
       component: Error
     }
   ]
 });
-router.beforeEach((to, from, next) => {
-  if(!Store.state.authenticated) {
-    const loggedUser = Store.getters.getUserByUsername(localStorage.getItem('loggedUser'));
-    if(loggedUser) {
-      Store.dispatch('authenticate', true);
-    } else {
-      localStorage.setItem('loggedUser', "");
-      Store.dispatch('authenticate', false);
+router.beforeResolve( (to, from , next) => {
+  Store.dispatch(constant.SET_LOADING, true);
+  next();
+});
+router.afterEach( _ => {
+  Store.dispatch(constant.SET_LOADING, false);
+});
+router.beforeEach(function(to, from, next) {
+  if(!Store.getters.getAuthToken) {
+    const authToken = localStorage.getItem('authToken');
+    if(authToken && authToken !== "undefined") {
+      Store.dispatch(constant.SET_AUTH, {token:authToken});
     }
   }
   if(to.meta.priavte) {
-    if(Store.state.authenticated) {
+    if(Store.getters.getAuthToken) {
       next();
-    } else if(to.path !== "/"){
+    } else if(to.path !== "/") {
       next({
         path: '/'
       });
-    } else if(to.path === '/') {
-      if(Store.state.authenticated) {
-        next({path:'/users'})
-        return;
-      } 
-      next();
     }
+  } else if(to.name === 'login' && Store.getters.getAuthToken) {
+    next({path:'/users'})
   } else {
     next();
   }
-	
 });
 export default router;
