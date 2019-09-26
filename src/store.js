@@ -17,14 +17,6 @@ export default new Vuex.Store({
       key:"first_name",
       header: "First Name"
     }],
-    users:[{
-      id:1,
-      username:"ptsntamil",
-      email:"ptsntamil@gmail.com",
-      password: "tamiltamil"
-    }],
-    authenticated: false,
-    nxtUserId:10,
     gridData: {
       data:[],
       per_page:0,
@@ -32,7 +24,6 @@ export default new Vuex.Store({
       total_pages:0,
       total:0
     },
-    loggedInUser: {},
     authToken:"",
     currentUser: {
       id:"",
@@ -66,26 +57,11 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    getUserById: (state) => (id) => {
-      return state.users.slice(id,1);
-    },
     getCurrentUser(state) {
       return state.currentUser;
     },
-    getUserByUsername: state => username => {
-      return state.users.find(user => user.username === username);
-    },
-    isAuthenticated: state => {
-      return state.authenticated;
-    },
-    getUsersForGrid: state => param => {
-      return state.users.slice(param.from, param.to);
-    },
     getGridData(state) {
       return state.gridData;
-    },
-    getUsers(state) {
-      return state.users;
     },
     getAuthToken(state) {
       return state.authToken;
@@ -98,27 +74,6 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async addorUpdateUser({state, dispatch}, payload) {
-      const {user} = payload;
-      if(user.id) {
-        await dispatch('updateUser', user);
-      } else {
-        state.users.push({...user, ...{ id:state.nxtUserId++ }});
-      }
-    },
-    updateUser({state}, user) {
-      state.users.some((itr, idx)=>{
-        if(itr.id === user.id) {
-          state.users[idx] = user;
-        }
-      });
-    },
-    deleteUser({state}, index) {
-      state.users.splice(index,1);
-    },
-    authenticate({state}, isAuthenticated) {
-      state.authenticated = isAuthenticated;
-    },
     async getAsyncUsers(context, param) {
       const result = await getUsers(param.page);
       context.commit('setUsers', result.data);
@@ -138,7 +93,6 @@ export default new Vuex.Store({
     },
     async login(context, credentials) {
       const result = await authenticateLogin(credentials).catch(error => {
-        console.log(error.response);
         context.commit(constant.SET_LOGIN_ERROR, error.response.data); 
         return; 
       });

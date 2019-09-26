@@ -3,10 +3,10 @@ import store from './store';
 
 async function getUsers(page) {
   return await httpClient.get(`api/users?page=${page}`);
-};
+}
 async function getUserById(id) {
   return await httpClient.get(`api/users/${id}`);
-};
+}
 async function authenticateLogin(credentials) {
   return await httpClient.post('api/login', credentials);
 }

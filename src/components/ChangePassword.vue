@@ -31,8 +31,8 @@
           <template slot="cancel"></template>
         </crud-modal>
         <transition name="fade" enter-active-class="animated fade" leave-active-class="animated fadeOut">
-				  <div v-if="show" class="modal-backdrop show"></div>
-			  </transition>
+          <div v-if="show" class="modal-backdrop show"></div>
+        </transition>
       </div>
     </div>
 </template>

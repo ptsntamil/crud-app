@@ -59,7 +59,7 @@ router.beforeResolve( (to, from , next) => {
   Store.dispatch(constant.SET_LOADING, true);
   next();
 });
-router.afterEach( _ => {
+router.afterEach( () => {
   Store.dispatch(constant.SET_LOADING, false);
 });
 router.beforeEach(function(to, from, next) {
