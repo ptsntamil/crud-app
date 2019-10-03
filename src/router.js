@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import CrudTable from './views/CrudTable.vue';
-import Error from './views/Error.vue';
+//import Error from './views/Error.vue';
 import CrudForm from './views/CrudForm.vue';
 import Login from './views/Login.vue';
 import Store from './store';
@@ -48,11 +48,11 @@ let router = new Router({
       meta: {
         priavte: true
       }
-    },{
+    }/*,{
       path: '*',
       name:"NotFound",
       component: Error
-    }
+    }*/
   ]
 });
 router.beforeResolve( (to, from , next) => {

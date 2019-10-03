@@ -47,6 +47,7 @@ export default new Vuex.Store({
       state.authToken = data.token; 
     },
     [constant.SET_LOGIN_ERROR](state, data) {
+      
       state.loginError = data.error; 
     },
     [constant.FORM_ERROR](state, data) {
@@ -97,7 +98,7 @@ export default new Vuex.Store({
         return; 
       });
       if(result) {
-        context.commit(constant.SET_AUTH, result.data);
+        context.dispatch(constant.SET_AUTH, result.data);
       }
     },
     async [ACTIONS.CREATE_OR_UPDATE_USER](context, user) {
@@ -110,6 +111,7 @@ export default new Vuex.Store({
       context.commit(constant.SET_AUTH, data);
     },
     [constant.SET_LOADING](context, data) {
+      
       context.commit(constant.SET_LOADING, data);
     }
   }

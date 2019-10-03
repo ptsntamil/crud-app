@@ -1,0 +1,28 @@
+.loader-backdrop {
+  position: absolute;
+  top: 55px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255,255,255, 0.7);
+}
+img.loader {
+  width: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: grow 1s infinite;
+}
+
+@keyframes grow {
+  0% {
+    width: 40px;
+  }
+  50% {
+    width: 45px;
+  }
+  100% {
+    width: 40px;
+  }
+}

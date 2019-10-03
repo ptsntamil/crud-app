@@ -18,6 +18,7 @@
           <div v-if="error.error" class="text-danger mt-2">{{error.error}}</div>
         </transition>
       </form>
+      <router-link class="btn btn-link mt-2" to="/about">About</router-link>
     </div>
   </div>
 </template>
@@ -35,20 +36,26 @@
 					email: "",
 					password: "",
 					error: ""
-				}
+        },
+        unsubscribe: undefined
 			};
     },
     created() {
-      this.$store.subscribe((mutation, state) => {
+      this.unsubscribe = this.$store.subscribe((mutation, state) => {
         switch(mutation.type) {
           case constant.SET_AUTH: 
-            this.moveToUsers();
+            if(state.authToken) {
+              this.moveToUsers();
+            }
             break;
           case constant.SET_LOGIN_ERROR: 
             this.error.error = state.loginError;
             break;
         }
       });
+    },
+    destroyed() {
+      this.unsubscribe();
     },
     methods: {
       login() {

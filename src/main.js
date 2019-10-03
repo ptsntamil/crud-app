@@ -13,7 +13,7 @@ import ChangePassword from './components/ChangePassword.vue';
 //import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'animate.css';
-
+import './assets/style.css';
 Vue.config.productionTip = false
 
 new Vue({

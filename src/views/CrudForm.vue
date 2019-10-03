@@ -39,14 +39,15 @@
           email:"",
           error: ""
         },
-        showmodal: false
+        showmodal: false,
+        unsubscribe: undefined
       }
     },
     components: {
       ChangePassword
     },
     created() {
-      this.$store.subscribe((mutation, state) => {
+      this.unsubscribe = this.$store.subscribe((mutation, state) => {
         if (mutation.type === 'setCurrentUser') {
           this.currentUser = state.currentUser;
         } else if(mutation.type === constant.FORM_ERROR) {
@@ -57,13 +58,13 @@
         }
       });
     },
+    destroyed() {
+      this.unsubscribe();
+    },
     mounted() {
       if(this.$route.params.id) {
         this.$store.dispatch('getUserById', +this.$route.params.id);
       }
-    },
-    destroyed() {
-
     },
     methods: {
       validateForm: function() {
