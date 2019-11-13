@@ -7,6 +7,9 @@ import CrudForm from './views/CrudForm.vue';
 import Login from './views/Login.vue';
 import Store from './store';
 import { constant } from './constants';
+import Dashboard from './views/Dashboard.vue';
+import TaskGrid from './Todo/views/TaskGrid.vue';
+
 
 Vue.use(Router)
 
@@ -48,11 +51,23 @@ let router = new Router({
       meta: {
         priavte: true
       }
-    }/*,{
+    },{
+      path:"/dashboard",
+      component: Dashboard,
+      meta: {
+        priavte: true
+      }
+    },{
+      path:"/tasks",
+      component: TaskGrid,
+      meta: {
+        priavte: true
+      }
+    },{
       path: '*',
       name:"NotFound",
       component: Error
-    }*/
+    }
   ]
 });
 router.beforeResolve( (to, from , next) => {

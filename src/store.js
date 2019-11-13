@@ -2,10 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {getUsers, getUserById, authenticateLogin, createOrUpdateUser } from './services';
 import {constant, ACTIONS} from './constants';
+import todo from './Todo/store';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
+  modules: {
+    todo
+  },
   state: {
     gridObj: [{
       key:"id",
@@ -61,14 +65,24 @@ export default new Vuex.Store({
     getCurrentUser(state) {
       return state.currentUser;
     },
-    getGridData(state) {
-      return state.gridData;
+    getGridData: ({gridData}) => (search) => {
+      if(search) {
+        let data = gridData.data.filter( user => user.first_name.indexOf(search) > -1);
+        return {
+          data: data,
+          total: data.length,
+          total_pages: 1,
+          per_page:6,
+          page:1,
+        };
+      }
+      return gridData;
     },
     getAuthToken(state) {
       return state.authToken;
     },
     isLoading(state) {
-      return state.isLoading
+      return state.isLoading;
     },
     fullPage(state) {
       return state.fullPage;

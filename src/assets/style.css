@@ -26,3 +26,41 @@ img.loader {
     width: 40px;
   }
 }
+
+.task .count {
+  font-size: 50px;
+}
+.overflow-ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.recents {
+  height: calc(100vh - 300px);
+  overflow: auto;
+}
+.recents .card {
+  border-left-width: 4px;
+}
+th .text {
+  flex: 1 auto;
+}
+th .actions {
+  width: 30px;
+  cursor: pointer;
+}
+.asc>img {
+  vertical-align: text-bottom;
+}
+.desc>img {
+  vertical-align: text-top;
+}
+.table .thead-dark th {
+  vertical-align: middle;
+}
+.active.asc .desc {
+  visibility: hidden;
+}
+.active.desc .asc {
+  visibility: hidden;
+}

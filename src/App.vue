@@ -15,8 +15,6 @@
 <script>
   import {constant} from './constants';
   import { mapGetters } from 'vuex';
-  import Loading from 'vue-loading-overlay';
-  import 'vue-loading-overlay/dist/vue-loading.css';
   import Loader from '@/components/Loader.vue';
   
   export default {

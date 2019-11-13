@@ -1,11 +1,12 @@
 <template>
-  <section class="mt-5">
-    <div class="row">
-      <div class="col-12">
+  <!-- <section class="mt-5">
+    <div class="row"> -->
+      <!-- <div class="col-12">
         <div class="card">
           <div class="card-body">
             <div class="row">
               <div class="col-12 text-right">
+                <input type="text" v-model="search" class="form-control w-50 mr-2 d-inline" />
                 <router-link class="btn btn-primary mb-2" to="/create">Create</router-link>
               </div>
             </div>
@@ -27,7 +28,7 @@
             </div>
             <div class="row mt-2"> 
               <div class="col-6">
-                Showing {{gridData.per_page * (gridData.page-1) +1 }} to {{gridData.per_page * gridData.page}} of {{gridData.total}}
+                Showing {{pageStartCount }} to {{currentPageCount}} of {{gridData.total}}
               </div>
               <div class="col-6 text-right">
                 <button class="btn btn-light mr-2" type="button" :disabled="page <= 1" v-on:click="prev">Prev</button>
@@ -37,20 +38,35 @@
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </div> -->
+    <Grid :gridData="gridData" :gridObj="gridObj" @next="next" @prev="prev" @sort="sort">
+      <template v-slot:actionHeader>
+        <th>Actions</th>
+      </template>
+      <td slot="action-data" slot-scope="data">
+        <router-link :to="'/user/' + data.data.id">Edit</router-link>
+        <a href="#" v-on:click.prevent="deleteUser(data.data.id)">Delete</a>
+      </td>
+    </Grid>
+  <!-- </section> -->
 </template>
 <script>
+import GridVue from '../components/Grid.vue';
+
 export default {
   name: 'CrudTable',
+  components: {
+    'Grid': GridVue
+  },
   data: function() {
     return {
-      page: 1
+      page: 1,
+      search:""
     };
   },
   computed: {
     gridData() {
-      return this.$store.getters.getGridData;
+      return this.$store.getters.getGridData(this.search);
     },
     gridObj() {
       return this.$store.state.gridObj;
@@ -73,6 +89,9 @@ export default {
     prev: function() {
       this.page -= 1;
       this.$store.dispatch('getAsyncUsers', {page:this.page});
+    },
+    sort: function(param) {
+      console.log(param);
     }
   }
 }
